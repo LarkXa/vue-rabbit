@@ -1,6 +1,19 @@
 <script setup>
 // import LayoutHeaderUl from './LayoutHeaderUl.vue'
 // import HeaderCart from './HeaderCart.vue'
+
+import { getCategoryAPI } from '@/apis/testAPI';
+import { onMounted, ref } from 'vue';
+
+const categoryList = ref([])
+const getCategory = async () =>{
+  const res = await getCategoryAPI()
+  console.log(res)
+  categoryList.value = res.result
+  console.log('getCategory')
+}
+
+onMounted(()=>{getCategory()})
 </script>
 
 <template>
@@ -10,7 +23,10 @@
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
 
-      <LayoutHeaderUl />
+      <ul class="app-header-nav" >
+        <li class="home" v-for="item in categoryList" :key="item.id">
+          <RouterLink to="/">{{ item.name }}</RouterLink></li>
+      </ul>
       <div class="search">
         <i class="iconfont icon-search"></i>
         <input type="text" placeholder="搜一搜">
